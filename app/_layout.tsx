@@ -11,6 +11,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="index" options={{ title: 'Home' }} />
         <Stack.Screen name="about" options={{ title: 'About' }} />
+        <Stack.Screen name="convexpage" options={{ title: 'Convex page' }} />
       </Stack>
     </ConvexProvider>
   );
