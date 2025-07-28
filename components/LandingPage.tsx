@@ -87,9 +87,9 @@ export function LandingPage() {
       </View>
 
       <View className="p-4">
-        <View className="container mx-auto text-center text-muted-foreground text-sm">
+        <Text className="container mx-auto text-center text-muted-foreground text-sm">
           &copy; {new Date().getFullYear()} dotlib. all rights reserved.
-        </View>
+        </Text>
       </View>
     </ScrollView>
   );
