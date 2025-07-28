@@ -4,15 +4,15 @@ import { ListEditor } from "@/components/ListEditor";
 import { Settings } from "@/components/Settings";
 import { StatusBar } from "@/components/StatusBar";
 import { TeamManager } from "@/components/TeamManager";
+import { useSettings } from "@/contexts/SettingsContext";
 import clsx from "clsx";
 import { useMutation, useQuery } from "convex/react";
 import { AnimatePresence } from "framer-motion";
 import { ChevronsLeft, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useSettings } from "./contexts/SettingsContext";
 
 import { Button } from "@/components/ui/button";
-import { api, type Doc, type Id } from "./lib/convex";
+import { api, type Doc, type Id } from "@/lib/convex";
 
 type ConvexItem = Doc<"items"> & { uuid: Id<"items"> };
 
