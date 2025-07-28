@@ -8,18 +8,18 @@ export function LandingPage() {
   return (
     <ScrollView className="min-h-screen flex flex-col bg-background text-foreground">
       <View className="p-4">
-        <View className="container mx-auto flex items-center">
-          <Image src="@/assets/favicon.ico" alt="logo" className="h-8 w-8 mr-2" />
-          <Text className="font-bold text-xl font-heading">dotlists</Text>
+        <View className="container mx-auto flex flex-row items-center">
+          <Image source={require("@/assets/favicon-32x32.png")} alt="logo" className="h-8 w-8 mr-2" />
+          <Text className="font-bold text-xl font-heading text-foreground">dotlists</Text>
         </View>
       </View>
 
       <View className="flex-grow">
         <View className="container mx-auto flex flex-col items-center justify-center text-center py-20">
-          <Text className="text-5xl md:text-7xl font-bold font-heading text-foreground mb-4">
+          <Text className="text-5xl md:text-7xl font-bold font-heading text-foreground text-center mb-4">
             organize your work, effortlessly.
           </Text>
-          <Text className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-8">
+          <Text className="text-lg md:text-xl text-muted-foreground text-center max-w-2xl mb-8">
             a collaborative workspace to manage tasks, track progress, and bring
             your team together. get started in seconds.
           </Text>
@@ -29,27 +29,27 @@ export function LandingPage() {
         </View>
 
         <View id="features" className="py-20 bg-muted-50">
-          <View className="container mx-auto text-center">
-            <Text className="text-4xl font-bold font-heading mb-12">
+          <View className="container mx-auto text-center items-center justify-center">
+            <Text className="text-4xl font-bold font-heading text-center text-foreground mb-12">
               everything you need to get work done
             </Text>
             <View className="grid md:grid-cols-3 gap-12">
               <View className="flex flex-col items-center">
                 <GanttChartSquare className="h-12 w-12 mb-4 text-primary" />
-                <Text className="text-2xl font-bold font-heading mb-2">
+                <Text className="text-2xl font-bold font-heading text-center mb-2">
                   visual project planning
                 </Text>
-                <Text className="text-muted-foreground">
+                <Text className="text-muted-foreground text-center">
                   plan and track your projects with our intuitive gantt charts.
                   visualize timelines, dependencies, and progress at a glance.
                 </Text>
               </View>
               <View className="flex flex-col items-center">
                 <CheckSquare className="h-12 w-12 mb-4 text-primary" />
-                <Text className="text-2xl font-bold font-heading mb-2">
+                <Text className="text-2xl font-bold font-heading text-center mb-2">
                   detailed task management
                 </Text>
-                <Text className="text-muted-foreground">
+                <Text className="text-muted-foreground text-center">
                   break down large tasks into manageable subtasks. track the
                   status of every detail to ensure nothing falls through the
                   cracks.
@@ -57,10 +57,10 @@ export function LandingPage() {
               </View>
               <View className="flex flex-col items-center">
                 <Users className="h-12 w-12 mb-4 text-primary" />
-                <Text className="text-2xl font-bold font-heading mb-2">
+                <Text className="text-2xl font-bold font-heading text-center mb-2">
                   seamless collaboration
                 </Text>
-                <Text className="text-muted-foreground">
+                <Text className="text-muted-foreground text-center">
                   work with your team in real-time. assign tasks, leave
                   comments, and get notifications to keep everyone in sync.
                 </Text>

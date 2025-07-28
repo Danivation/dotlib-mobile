@@ -7,7 +7,7 @@ import App from "./App";
 
 export default function Index() {
   return (
-    <View>
+    <View className="h-full">
       <ConvexAuthProvider client={convex}>
         <ThemeProvider>
           <SettingsProvider>
