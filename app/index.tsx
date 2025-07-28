@@ -8,10 +8,7 @@ export default function Index() {
       <Link href="/about" style={styles.button}>
         Go to About screen
       </Link>
-      <Link href="/convexpage" style={styles.button}>
-        Go to Convex page
-      </Link>
-      <Link href="/App" style={styles.button}>
+      <Link href="/dotlists" style={styles.button}>
         Go to Dotlists
       </Link>
     </View>
