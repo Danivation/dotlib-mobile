@@ -28,7 +28,7 @@ export function LandingPage() {
           </View>
         </View>
 
-        <View id="features" className="py-20 bg-muted/50">
+        <View id="features" className="py-20 bg-muted-50">
           <View className="container mx-auto text-center">
             <Text className="text-4xl font-bold font-heading mb-12">
               everything you need to get work done

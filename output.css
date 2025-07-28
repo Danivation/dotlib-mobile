@@ -1437,106 +1437,41 @@ video {
   transition-duration: 300ms;
 }
 
-@font-face {
-  font-family: "PP Editorial";
-
-  src: url("../assets/fonts/pp-editorial.woff2") format("woff2");
-
-  font-weight: normal;
-
-  font-style: normal;
-
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Poppins Bold";
-
-  src: url("../assets/fonts/Poppins-Bold.ttf") format("truetype");
-
-  font-weight: bold;
-
-  font-style: normal;
-
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Geist";
-
-  src: url("../assets/fonts/Geist-Regular.woff2") format("woff2");
-
-  font-weight: normal;
-
-  font-style: normal;
-
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Geist Mono";
-
-  src: url("../assets/fonts/GeistMono-Regular.woff2") format("woff2");
-
-  font-weight: normal;
-
-  font-style: normal;
-
-  font-display: swap;
+:root {
+  --background: #52af18;
 }
 
 .font-heading {
-  font-family: "Poppins Bold";
+  font-family: "Poppins";
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
 }
 
-/*
-@theme {
-  --font-serif: "PP Editorial";
-  --font-heading: "Poppins Bold";
-
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
-
-  --font-sans:
-    Geist, Inter, Inter override, ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-mono: "Geist Mono", monospace;
-
-  --font-family-sans: var(--font-sans);
-  --font-family-serif: var(--font-serif);
-  --font-family-mono: var(--font-mono);
-  --font-family-heading: var(--font-heading);
-
+.font-serif {
+  font-family: "PP Editorial";
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
-*/
+
+.font-sans {
+  font-family: "Geist";
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-mono {
+  font-family: "Geist Mono";
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.bg-background {
+  background-color: var(--background);
+}
 
 .file\:inline-flex::file-selector-button {
   display: inline-flex;
