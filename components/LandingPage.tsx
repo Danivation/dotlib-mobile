@@ -1,6 +1,7 @@
 // src/components/LandingPage.tsx
+import { CheckSquare, GanttChartSquare, Users } from "lucide-react";
+import "../app/global.css";
 import { SignIn } from "./auth/SignIn";
-import { GanttChartSquare, Users, CheckSquare } from "lucide-react";
 
 export function LandingPage() {
   return (

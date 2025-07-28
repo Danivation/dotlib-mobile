@@ -1,8 +1,9 @@
 // src/components/AddTaskBar.tsx
-import { Button } from "./ui/button";
 import { useTheme } from "@/hooks/useTheme";
-import { Plus } from "lucide-react";
 import clsx from "clsx";
+import { Plus } from "lucide-react";
+import "../app/global.css";
+import { ButtonDotlists } from "./ui/button";
 
 interface AddTaskBarProps {
   handleAddItem: () => void;
@@ -13,7 +14,7 @@ export function AddTaskBar({ handleAddItem }: AddTaskBarProps) {
 
   return (
     <div className="px-4 py-2">
-      <Button
+      <ButtonDotlists
         onClick={handleAddItem}
         variant="outline"
         className={clsx(
@@ -23,7 +24,7 @@ export function AddTaskBar({ handleAddItem }: AddTaskBarProps) {
       >
         <Plus className="h-4 w-4 mr-2" />
         add new task
-      </Button>
+      </ButtonDotlists>
     </div>
   );
 }

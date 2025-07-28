@@ -4,7 +4,8 @@ import { debounce } from "@/lib/utils";
 import { useMutation, useQuery } from "convex/react";
 import Gantt from "frappe-gantt";
 import { memo, useEffect, useRef } from "react";
-import { Button } from "./ui/button";
+import "../app/global.css";
+import { ButtonDotlists } from "./ui/button";
 
 interface GanttViewProps {
   listId: Id<"lists">;
@@ -159,10 +160,10 @@ export const GanttView = memo(function GanttView({ listId }: GanttViewProps) {
   return (
     <div className="p-4">
       <div className="flex justify-end gap-2 mb-4">
-        <Button onClick={handleAddTask}>add task</Button>
-        <Button onClick={handleExport} variant="outline">
+        <ButtonDotlists onClick={handleAddTask}>add task</ButtonDotlists>
+        <ButtonDotlists onClick={handleExport} variant="outline">
           export to pdf
-        </Button>
+        </ButtonDotlists>
       </div>
       <svg ref={ganttRef}></svg>
     </div>

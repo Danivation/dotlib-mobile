@@ -1,43 +1,44 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Textarea } from "./ui/textarea";
-import { Button } from "./ui/button";
-import type { Doc, Id } from "@/lib/convex";
-import { useAction, useQuery, useMutation } from "convex/react";
-import { api } from "@/lib/convex";
-import {
-  Sparkles,
-  Calendar as CalendarIcon,
-  User,
-  Trash2,
-  MoreVertical,
-  MessageSquare,
-  ChevronRight,
-  ChevronDown,
-} from "lucide-react";
-import { DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useSettings } from "@/contexts/SettingsContext";
+import type { Doc, Id } from "@/lib/convex";
+import { api } from "@/lib/convex";
+import clsx from "clsx";
+import { useAction, useMutation, useQuery } from "convex/react";
+import { format } from "date-fns";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  Calendar as CalendarIcon,
+  ChevronDown,
+  ChevronRight,
+  MessageSquare,
+  MoreVertical,
+  Sparkles,
+  Trash2,
+  User,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
+import "../app/global.css";
+import { CommentSection } from "./CommentSection";
+import { SubtaskItem } from "./SubtaskItem";
+import { ButtonDotlists } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
   DropdownMenuSeparator,
   DropdownMenuSub,
-  DropdownMenuSubTrigger,
   DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { format } from "date-fns";
-import clsx from "clsx";
-import { CommentSection } from "./CommentSection";
-import { useSettings } from "@/contexts/SettingsContext";
 import { Input } from "./ui/input";
-import { SubtaskItem } from "./SubtaskItem";
+import { Textarea } from "./ui/textarea";
 
 interface ListItemProps {
   node: Doc<"items"> & { uuid: Id<"items"> };
@@ -181,7 +182,7 @@ export function ListItem({
       id={node.uuid}
     >
       <div className="flex items-center">
-        <Button
+        <ButtonDotlists
           variant="ghost"
           size="icon"
           className="h-6 w-6"
@@ -192,7 +193,7 @@ export function ListItem({
           ) : (
             <ChevronRight className="h-4 w-4" />
           )}
-        </Button>
+        </ButtonDotlists>
         <div
           onClick={() => {
             const currentState = node.state as keyof typeof stateOrder;
@@ -249,19 +250,19 @@ export function ListItem({
               {format(new Date(node.dueDate), "MMM d")}
             </span>
           )}
-          <Button
+          <ButtonDotlists
             variant="ghost"
             size="icon"
             className="h-8 w-8"
             onClick={() => handleDeleteItem(node.uuid)}
           >
             <Trash2 className="h-4 w-4 text-red-500" />
-          </Button>
+          </ButtonDotlists>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
+              <ButtonDotlists variant="ghost" size="icon" className="h-8 w-8">
                 <MoreVertical className="h-4 w-4" />
-              </Button>
+              </ButtonDotlists>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem onClick={() => setIsCommenting(!isCommenting)}>
@@ -355,9 +356,9 @@ export function ListItem({
                   }
                 }}
               />
-              <Button onClick={handleCreateSubtask} size="sm" className="ml-2">
+              <ButtonDotlists onClick={handleCreateSubtask} size="sm" className="ml-2">
                 add
-              </Button>
+              </ButtonDotlists>
             </div>
           </motion.div>
         )}

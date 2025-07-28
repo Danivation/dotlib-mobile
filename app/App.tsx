@@ -2,6 +2,7 @@ import { LandingPage } from "@/components/LandingPage";
 import { useConvexAuth } from "convex/react";
 import React, { Suspense } from "react";
 import { View } from "react-native";
+import "./global.css";
 //
 const AuthenticatedApp = React.lazy(() => import("./AuthenticatedApp"));
 

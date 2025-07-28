@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { useMutation } from "convex/react";
-import { api } from "@/lib/convex";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import type { Doc } from "@/lib/convex";
-import { TeamMember } from "./TeamMember";
+import { api } from "@/lib/convex";
+import { useMutation } from "convex/react";
 import { Trash2 } from "lucide-react";
+import { useState } from "react";
+import "../app/global.css";
+import { TeamMember } from "./TeamMember";
+import { ButtonDotlists } from "./ui/button";
+import { Input } from "./ui/input";
 
 interface TeamManagerProps {
   teams: (Doc<"teams"> & { role: string })[];
@@ -70,14 +71,14 @@ export function TeamManager({
             <div className="flex items-center justify-between">
               <h3 className="font-bold font-heading">{team.name}</h3>
               {team.role === "admin" && (
-                <Button
+                <ButtonDotlists
                   variant="ghost"
                   size="icon"
                   onClick={() => handleDeleteTeam(team._id)}
                   className="h-6 w-6"
                 >
                   <Trash2 className="h-4 w-4 text-red-500" />
-                </Button>
+                </ButtonDotlists>
               )}
             </div>
             <TeamMember team={team} viewerRole={team.role} />
@@ -99,7 +100,7 @@ export function TeamManager({
                   >
                     <span>{list.name}</span>
                     {team.role === "admin" && (
-                      <Button
+                      <ButtonDotlists
                         variant="ghost"
                         size="icon"
                         onClick={(e) => {
@@ -109,19 +110,19 @@ export function TeamManager({
                         className="h-6 w-6"
                       >
                         <Trash2 className="h-4 w-4 text-red-500" />
-                      </Button>
+                      </ButtonDotlists>
                     )}
                   </li>
                 ))}
             </ul>
-            <Button
+            <ButtonDotlists
               variant="ghost"
               size="sm"
               onClick={() => handleCreateList(team._id)}
               className="mt-1"
             >
               + new team list
-            </Button>
+            </ButtonDotlists>
             {team.role === "admin" && (
               <div className="mt-2">
                 <Input
@@ -135,13 +136,13 @@ export function TeamManager({
                   placeholder="invite user..."
                   className="h-8"
                 />
-                <Button
+                <ButtonDotlists
                   onClick={() => handleSendInvitation(team._id)}
                   size="sm"
                   className="mt-1"
                 >
                   invite
-                </Button>
+                </ButtonDotlists>
               </div>
             )}
           </div>
@@ -154,9 +155,9 @@ export function TeamManager({
           placeholder="new team name..."
           className="mb-2"
         />
-        <Button onClick={handleCreateTeam} size="sm">
+        <ButtonDotlists onClick={handleCreateTeam} size="sm">
           create team
-        </Button>
+        </ButtonDotlists>
       </div>
     </div>
   );

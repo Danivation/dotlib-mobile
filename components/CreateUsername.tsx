@@ -1,8 +1,9 @@
 // src/components/CreateUsername.tsx
-import { useState } from "react";
-import { useMutation } from "convex/react";
 import { api } from "@/lib/convex";
-import { Button } from "./ui/button";
+import { useMutation } from "convex/react";
+import { useState } from "react";
+import "../app/global.css";
+import { ButtonDotlists } from "./ui/button";
 import { Input } from "./ui/input";
 
 export function CreateUsername() {
@@ -38,9 +39,9 @@ export function CreateUsername() {
           placeholder="username"
           className="mb-2"
         />
-        <Button onClick={handleCreateProfile} className="w-full">
+        <ButtonDotlists onClick={handleCreateProfile} className="w-full">
           Create Profile
-        </Button>
+        </ButtonDotlists>
         {error && <p className="text-red-500 mt-2 text-sm">{error}</p>}
       </div>
     </div>

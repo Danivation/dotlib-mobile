@@ -1,9 +1,10 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "./ui/button";
-import type { Doc, Id } from "@/lib/convex";
-import { ListItem } from "./ListItem";
 import { useTheme } from "@/hooks/useTheme";
+import type { Doc, Id } from "@/lib/convex";
 import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
+import "../app/global.css";
+import { ListItem } from "./ListItem";
+import { ButtonDotlists } from "./ui/button";
 
 type ConvexItem = Doc<"items"> & { uuid: Id<"items"> };
 
@@ -51,7 +52,7 @@ export function ListEditor({
         animate={{ opacity: 1, y: 0 }}
         className="flex justify-center my-2"
       >
-        <Button
+        <ButtonDotlists
           onClick={() => handleAddItem("new task", "red")}
           variant="outline"
           className={clsx(
@@ -60,7 +61,7 @@ export function ListEditor({
           )}
         >
           add new task <span className={clsx("ml-2 text-xs", theme === "blue" ? "text-blue-200" : "text-muted-foreground")}> (ctrl+shift+n)</span>
-        </Button>
+        </ButtonDotlists>
       </motion.li>
       <AnimatePresence>
         {sortedNodes.map((node) => (

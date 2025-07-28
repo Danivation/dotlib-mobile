@@ -1,10 +1,11 @@
 // src/components/CommentSection.tsx
-import { useQuery, useMutation } from "convex/react";
-import { api } from "@/lib/convex";
-import { useState } from "react";
-import { Button } from "./ui/button";
-import { Textarea } from "./ui/textarea";
 import type { Id } from "@/lib/convex";
+import { api } from "@/lib/convex";
+import { useMutation, useQuery } from "convex/react";
+import { useState } from "react";
+import "../app/global.css";
+import { ButtonDotlists } from "./ui/button";
+import { Textarea } from "./ui/textarea";
 
 interface CommentSectionProps {
   itemId: Id<"items">;
@@ -40,9 +41,9 @@ export function CommentSection({ itemId }: CommentSectionProps) {
           placeholder="add a comment..."
           className="text-sm"
         />
-        <Button onClick={handleAddComment} size="sm">
+        <ButtonDotlists onClick={handleAddComment} size="sm">
           send
-        </Button>
+        </ButtonDotlists>
       </div>
     </div>
   );

@@ -1,8 +1,9 @@
 // src/components/TeamMember.tsx
-import { useQuery, useMutation } from "convex/react";
-import { api } from "@/lib/convex";
-import { Button } from "./ui/button";
 import type { Doc } from "@/lib/convex";
+import { api } from "@/lib/convex";
+import { useMutation, useQuery } from "convex/react";
+import "../app/global.css";
+import { ButtonDotlists } from "./ui/button";
 
 interface TeamMemberProps {
   team: Doc<"teams">;
@@ -25,14 +26,14 @@ export function TeamMember({ team, viewerRole }: TeamMemberProps) {
             {member.username} ({member.role})
           </span>
           {viewerRole === "admin" && member.userId !== team.ownerId && (
-            <Button
+            <ButtonDotlists
               variant="ghost"
               size="sm"
               className="h-6"
               onClick={() => handleRemoveMember(member.userId)}
             >
               remove
-            </Button>
+            </ButtonDotlists>
           )}
         </li>
       ))}

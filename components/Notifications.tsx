@@ -1,15 +1,16 @@
 // src/components/Notifications.tsx
-import { useQuery, useMutation } from "convex/react";
 import { api } from "@/lib/convex";
+import { useMutation, useQuery } from "convex/react";
+import { Bell } from "lucide-react";
+import "../app/global.css";
+import { ButtonDotlists } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
-import { Bell } from "lucide-react";
 
 export function Notifications() {
   const data = useQuery(api.notifications.getNotifications);
@@ -24,12 +25,12 @@ export function Notifications() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative">
+        <ButtonDotlists variant="ghost" size="icon" className="relative">
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
             <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500" />
           )}
-        </Button>
+        </ButtonDotlists>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-80">
         {unreadCount === 0 && (
@@ -55,19 +56,19 @@ export function Notifications() {
               <span className="font-semibold">{inv.teamName}</span>.
             </p>
             <div className="flex justify-end gap-2 mt-2">
-              <Button
+              <ButtonDotlists
                 size="sm"
                 variant="outline"
                 onClick={() => declineInvitation({ invitationId: inv._id })}
               >
                 decline
-              </Button>
-              <Button
+              </ButtonDotlists>
+              <ButtonDotlists
                 size="sm"
                 onClick={() => acceptInvitation({ invitationId: inv._id })}
               >
                 accept
-              </Button>
+              </ButtonDotlists>
             </div>
           </div>
         ))}

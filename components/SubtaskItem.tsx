@@ -1,13 +1,14 @@
 // src/components/SubtaskItem.tsx
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
 import type { Doc } from "@/lib/convex";
-import { useMutation } from "convex/react";
 import { api } from "@/lib/convex";
-import { Trash2 } from "lucide-react";
 import clsx from "clsx";
+import { useMutation } from "convex/react";
+import { motion } from "framer-motion";
+import { Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import "../app/global.css";
+import { ButtonDotlists } from "./ui/button";
+import { Input } from "./ui/input";
 
 const subtaskStateOrder = { todo: 0, "in progress": 1, done: 2 } as const;
 const subtaskStateOrderReversed = ["todo", "in progress", "done"] as const;
@@ -76,14 +77,14 @@ export function SubtaskItem({ subtask }: SubtaskItemProps) {
         onChange={(e) => setText(e.target.value)}
         className="h-8 border-none bg-transparent focus:ring-0"
       />
-      <Button
+      <ButtonDotlists
         variant="ghost"
         size="icon"
         onClick={() => deleteSubtask({ subtaskId: subtask._id })}
         className="h-6 w-6"
       >
         <Trash2 className="h-4 w-4 text-red-500" />
-      </Button>
+      </ButtonDotlists>
     </motion.li>
   );
 }

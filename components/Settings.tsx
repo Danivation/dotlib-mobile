@@ -1,11 +1,12 @@
-import { Button } from "./ui/button";
+import { useSettings } from "@/contexts/SettingsContext";
+import { useTheme } from "@/hooks/useTheme";
+import { motion } from "framer-motion";
+import { X } from "lucide-react";
+import { createPortal } from "react-dom";
+import "../app/global.css";
+import { ButtonDotlists } from "./ui/button";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
-import { X } from "lucide-react";
-import { useTheme } from "@/hooks/useTheme";
-import { useSettings } from "@/contexts/SettingsContext";
-import { createPortal } from "react-dom";
-import { motion } from "framer-motion";
 
 const THEMES = ["light", "dark", "gruvbox", "blue", "monochrome"];
 
@@ -43,14 +44,14 @@ export function Settings({ onClose }: SettingsProps) {
           </p>
           <div className="flex flex-wrap gap-2 mt-2">
             {THEMES.map((themeName) => (
-              <Button
+              <ButtonDotlists
                 key={themeName}
                 variant={theme === themeName ? "secondary" : "outline"}
                 onClick={() => setTheme(themeName as "light" | "dark" | "gruvbox" | "blue" | "monochrome")}
                 className="capitalize"
               >
                 {themeName}
-              </Button>
+              </ButtonDotlists>
             ))}
           </div>
         </div>

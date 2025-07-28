@@ -10,6 +10,7 @@ import { useMutation, useQuery } from "convex/react";
 import { AnimatePresence } from "framer-motion";
 import { ChevronsLeft, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import "./global.css";
 
 import { ButtonDotlists } from "@/components/ui/button";
 import { api, type Doc, type Id } from "@/lib/convex";

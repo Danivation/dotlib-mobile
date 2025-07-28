@@ -1,28 +1,29 @@
 
 
+import { useSettings } from "@/contexts/SettingsContext";
 import type { Doc, Id } from "@/lib/convex";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import clsx from "clsx";
+import "../app/global.css";
+import { Notifications } from "./Notifications";
+import { ButtonDotlists } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuTrigger,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Notifications } from "./Notifications";
-import { useSettings } from "@/contexts/SettingsContext";
-import clsx from "clsx";
+import { Input } from "./ui/input";
 
+import { useAuthActions } from "@convex-dev/auth/react";
 import {
+  BarChart3,
   ChevronDown,
   ChevronsRight,
-  Menu,
   List,
-  BarChart3,
+  Menu,
   Settings as SettingsIcon,
 } from "lucide-react";
-import { useAuthActions } from "@convex-dev/auth/react";
 
 type ConvexItem = Doc<"items"> & { uuid: Id<"items"> };
 type ViewMode = "list" | "gantt";
@@ -93,23 +94,23 @@ export function StatusBar({
         <div className="flex px-3 py-1 items-center">
           {!isSimpleMode && (
             <>
-              <Button
+              <ButtonDotlists
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsMobileDrawerOpen(true)}
                 className="mr-2 md:hidden"
               >
                 <Menu className="h-5 w-5" />
-              </Button>
+              </ButtonDotlists>
               {!isDesktopSidebarOpen && (
-                <Button
+                <ButtonDotlists
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsDesktopSidebarOpen(true)}
                   className="mr-2 hidden md:block"
                 >
                   <ChevronsRight className="h-5 w-5" />
-                </Button>
+                </ButtonDotlists>
               )}
             </>
           )}
@@ -124,37 +125,37 @@ export function StatusBar({
           <div className="flex items-center">
             {!isSimpleMode && (
               <>
-                <Button
+                <ButtonDotlists
                   variant={viewMode === "list" ? "secondary" : "ghost"}
                   size="icon"
                   onClick={() => setViewMode("list")}
                 >
                   <List className="h-5 w-5" />
-                </Button>
-                <Button
+                </ButtonDotlists>
+                <ButtonDotlists
                   variant={viewMode === "gantt" ? "secondary" : "ghost"}
                   size="icon"
                   onClick={() => setViewMode("gantt")}
                 >
                   <BarChart3 className="h-5 w-5" />
-                </Button>
+                </ButtonDotlists>
               </>
             )}
           </div>
           <Notifications />
-          <Button variant="ghost" size="icon" onClick={onSettingsClick}>
+          <ButtonDotlists variant="ghost" size="icon" onClick={onSettingsClick}>
             <SettingsIcon className="h-5 w-5" />
-          </Button>
+          </ButtonDotlists>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
+              <ButtonDotlists
                 variant="ghost"
                 className="!ring-none !border-none !outline-none"
                 size="icon"
                 tabIndex={-1}
               >
                 <ChevronDown className="w-5 w-5" />
-              </Button>
+              </ButtonDotlists>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="p-3 rounded-lg">
               {isSimpleMode && (
