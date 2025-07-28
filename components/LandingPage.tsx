@@ -16,7 +16,7 @@ export function LandingPage() {
 
       <View className="flex-grow">
         <View className="container mx-auto flex flex-col items-center justify-center text-center py-20">
-          <Text className="text-5xl md:text-7xl font-bold font-heading mb-4">
+          <Text className="text-5xl md:text-7xl font-bold font-heading text-foreground mb-4">
             organize your work, effortlessly.
           </Text>
           <Text className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-8">
