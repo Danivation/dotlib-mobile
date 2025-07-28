@@ -3,7 +3,7 @@ import { ThemeProvider } from "@/contexts/ThemeProvider";
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import { View } from 'react-native';
 import { convex } from "./_layout";
-import NativewindApp from "./NativewindApp";
+import App from "./App";
 
 export default function DotlistsScreen() {
   return (
@@ -11,7 +11,7 @@ export default function DotlistsScreen() {
       <ConvexAuthProvider client={convex}>
         <ThemeProvider>
           <SettingsProvider>
-            <NativewindApp />
+            <App />
           </SettingsProvider>
         </ThemeProvider>
       </ConvexAuthProvider>
