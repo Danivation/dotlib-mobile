@@ -4,7 +4,7 @@ import * as React from "react"
 
 import { buttonVariants, cn } from "@/lib/utils"
 
-function Button({
+function ButtonDotlists({
   className,
   variant,
   size,
@@ -25,5 +25,5 @@ function Button({
   )
 }
 
-export { Button }
+export { ButtonDotlists }
 

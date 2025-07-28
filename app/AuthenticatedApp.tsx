@@ -11,8 +11,9 @@ import { AnimatePresence } from "framer-motion";
 import { ChevronsLeft, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { ButtonDotlists } from "@/components/ui/button";
 import { api, type Doc, type Id } from "@/lib/convex";
+import { Button, View } from "react-native";
 
 type ConvexItem = Doc<"items"> & { uuid: Id<"items"> };
 
@@ -162,7 +163,7 @@ export default function AuthenticatedApp() {
     rawLists === undefined ||
     teams === undefined
   ) {
-    return <div className="flex items-center justify-center h-screen">Loading...</div>;
+    return <View className="flex items-center justify-center h-screen">Loading...</View>;
   }
 
   if (userProfile === null) {
@@ -171,10 +172,10 @@ export default function AuthenticatedApp() {
 
   if (lists.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-4xl font-bold mb-8">no lists yet!</h1>
-        <Button onClick={() => handleCreateList()}>create a new list</Button>
-      </div>
+      <View className="flex flex-col items-center justify-center h-screen">
+        <Text className="text-4xl font-bold mb-8">no lists yet!</Text>
+        <ButtonDotlists onClick={() => handleCreateList()}>create a new list</ButtonDotlists>
+      </View>
     );
   }
 
@@ -182,16 +183,16 @@ export default function AuthenticatedApp() {
 
   const sidebarContent = (
     <>
-      <div className="flex items-center justify-between mb-4">
+      <View className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold font-heading">personal lists</h2>
-        <Button
+        <ButtonDotlists
           variant="ghost"
           size="icon"
           onClick={() => isMobileDrawerOpen ? setIsMobileDrawerOpen(false) : setIsDesktopSidebarOpen(false)}
         >
           <ChevronsLeft className="h-5 w-5" />
-        </Button>
-      </div>
+        </ButtonDotlists>
+      </View>
       <ul>
         {personalLists.map((list) => (
           <li
@@ -208,7 +209,7 @@ export default function AuthenticatedApp() {
             }}
           >
             <span>{list.name}</span>
-            <Button
+            <ButtonDotlists
               variant="ghost"
               size="icon"
               onClick={(e) => {
@@ -218,13 +219,13 @@ export default function AuthenticatedApp() {
               className="h-6 w-6"
             >
               <Trash2 className="h-4 w-4 text-red-500" />
-            </Button>
+            </ButtonDotlists>
           </li>
         ))}
       </ul>
-      <Button variant="ghost" size="sm" onClick={() => handleCreateList()} className="mt-1">
+      <ButtonDotlists variant="ghost" size="sm" onClick={() => handleCreateList()} className="mt-1">
         + new personal list <span className="ml-2 text-xs text-muted-foreground">(ctrl+shift+l)</span>
-      </Button>
+      </ButtonDotlists>
       {!isSimpleMode && (
         <>
           <hr className="my-4" />
@@ -251,7 +252,9 @@ export default function AuthenticatedApp() {
     <>
       <main className="relative md:flex h-screen">
         {/* Mobile Drawer */}
-        <div
+        <Button
+          title="Mobile drawer"
+        /*
           className={clsx(
             "fixed inset-0 z-20 bg-black bg-opacity-50 transition-opacity md:hidden",
             {
@@ -259,9 +262,10 @@ export default function AuthenticatedApp() {
               "opacity-0 pointer-events-none": !isMobileDrawerOpen,
             },
           )}
-          onClick={() => setIsMobileDrawerOpen(false)}
+            */
+          onPress={() => setIsMobileDrawerOpen(false)}
         />
-        <div
+        <View
           className={clsx(
             "fixed top-0 left-0 h-full bg-background z-30 w-3/4 p-4 border-r overflow-y-auto transition-transform duration-300 md:hidden",
             {
@@ -271,10 +275,10 @@ export default function AuthenticatedApp() {
           )}
         >
           {sidebarContent}
-        </div>
+        </View>
 
         {/* Desktop Sidebar */}
-        <div
+        <View
           className={clsx(
             "hidden md:block border-r h-full overflow-y-auto transition-all duration-300",
             {
@@ -284,10 +288,10 @@ export default function AuthenticatedApp() {
           )}
         >
           {isDesktopSidebarOpen && sidebarContent}
-        </div>
+        </View>
 
         {/* Main Content */}
-        <div
+        <View
           className={clsx(
             "flex flex-col w-full h-full transition-all duration-300",
             {
@@ -311,7 +315,7 @@ export default function AuthenticatedApp() {
             setViewMode={setViewMode}
             onSettingsClick={() => setIsSettingsOpen(true)}
           />
-          <div className="flex-grow overflow-y-auto px-4 mt-16">
+          <View className="flex-grow overflow-y-auto px-4 mt-16">
             {selectedList && (viewMode === "list" || isSimpleMode) && (
               <ListEditor
                 state={selectedList}
@@ -325,8 +329,8 @@ export default function AuthenticatedApp() {
             {selectedListId && viewMode === "gantt" && !isSimpleMode && (
               <GanttView listId={selectedListId} />
             )}
-          </div>
-        </div>
+          </View>
+        </View>
       </main>
       <AnimatePresence>
         {isSettingsOpen && (

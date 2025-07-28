@@ -11,6 +11,9 @@ export default function Index() {
       <Link href="/convexpage" style={styles.button}>
         Go to Convex page
       </Link>
+      <Link href="/App" style={styles.button}>
+        Go to Dotlists
+      </Link>
     </View>
   );
 }

@@ -1,11 +1,10 @@
-import { useEffect, useRef, memo } from "react";
-import { useQuery, useMutation } from "convex/react";
-import { api } from "@/lib/convex";
 import type { Id } from "@/lib/convex";
-import Gantt from "frappe-gantt";
-import { Button } from "./ui/button";
-import jsPDF from "jspdf";
+import { api } from "@/lib/convex";
 import { debounce } from "@/lib/utils";
+import { useMutation, useQuery } from "convex/react";
+import Gantt from "frappe-gantt";
+import { memo, useEffect, useRef } from "react";
+import { Button } from "./ui/button";
 
 interface GanttViewProps {
   listId: Id<"lists">;
@@ -127,6 +126,7 @@ export const GanttView = memo(function GanttView({ listId }: GanttViewProps) {
     if (ganttRef.current) {
       const svg = ganttRef.current;
       const svgData = new XMLSerializer().serializeToString(svg);
+      /*
       const doc = new jsPDF("landscape");
       doc.html(svgData, {
         callback: function (doc) {
@@ -135,6 +135,7 @@ export const GanttView = memo(function GanttView({ listId }: GanttViewProps) {
         x: 10,
         y: 10,
       });
+      */
     }
   };
 
