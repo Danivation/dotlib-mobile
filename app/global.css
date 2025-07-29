@@ -2,11 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import "../node_modules/tailwindcss";
-
-
 :root {
+  color-scheme: dark;
   --background: 40 13% 15%; /* #282828 */
   --foreground: 40 53% 84%; /* #ebdbb2 */
   --card: 40 13% 20%; /* #3c3836 */
@@ -57,31 +54,6 @@
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
-
-  /*
-  --animate-accordion-down: accordion-down 0.2s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
-
-  @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-
-    to {
-      height: var(--radix-accordion-content-height);
-    }
-  }
-
-  @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-
-    to {
-      height: 0;
-    }
-  }
-  */
 }
 
 .font-heading {
@@ -95,7 +67,7 @@
   font-style: normal;
 }
 .font-sans {
-  font-family: "Geist";
+  font-family: "Geist", "Roboto", "Arial";
   font-weight: normal;
   font-style: normal;
 }
@@ -105,8 +77,17 @@
   font-style: normal;
 }
 
+.container {
+  padding-inline:2rem;
+  margin-inline: auto;
+}
+
 .bg-background {
   background-color: var(--color-background);
+}
+
+.bg-primary {
+  background-color: var(--color-primary);
 }
 
 .bg-muted-50 {
@@ -115,4 +96,20 @@
 
 .text-foreground {
   color: var(--color-foreground);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-primary-foreground {
+  color: var(--color-primary-foreground);
+}
+
+.text-muted-foreground {
+  color: var(--color-muted-foreground);
+}
+
+:hover.bg-primary {
+  background-color: color-mix(in oklab, var(--color-primary) 90%, transparent);;
 }
