@@ -1,8 +1,7 @@
 import { useSettings } from "@/contexts/SettingsContext";
 import { useTheme } from "@/hooks/useTheme";
-import { motion } from "framer-motion";
-import { X } from "lucide-react";
-import { createPortal } from "react-dom";
+import { X } from "lucide-react-native";
+import { Modal, View, Text, TouchableOpacity } from "react-native";
 import "../app/global.css";
 import { ButtonDotlists } from "./ui/button";
 import { Label } from "./ui/label";
@@ -12,89 +11,65 @@ const THEMES = ["light", "dark", "gruvbox", "blue", "monochrome"];
 
 interface SettingsProps {
   onClose: () => void;
+  isOpen: boolean;
 }
 
-export function Settings({ onClose }: SettingsProps) {
+export function Settings({ onClose, isOpen }: SettingsProps) {
   const { theme, setTheme } = useTheme();
   const { isSimpleMode, setIsSimpleMode } = useSettings();
 
-  // This is the modal content. Clicks inside this div will be stopped.
-  const modalContent = (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 50 }}
-      transition={{ type: "tween", ease: "easeOut", duration: 0.3 }}
-      className="bg-background p-8 rounded-lg shadow-lg w-full max-w-md relative"
-      onClick={(e) => e.stopPropagation()}
+  return (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={isOpen}
+      onRequestClose={onClose}
     >
-      <h2 className="text-2xl font-bold mb-4">settings</h2>
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 p-1 rounded-full text-gray-500 hover:text-gray-800 hover:bg-gray-200"
-        aria-label="Close settings"
-      >
-        <X className="h-6 w-6" />
-      </button>
-      <div className="space-y-6">
-        <div>
-          <h3 className="text-lg font-medium">theme</h3>
-          <p className="text-sm text-muted-foreground">
-            select a color theme for the application.
-          </p>
-          <div className="flex flex-wrap gap-2 mt-2">
-            {THEMES.map((themeName) => (
-              <ButtonDotlists
-                key={themeName}
-                variant={theme === themeName ? "secondary" : "outline"}
-                onClick={() => setTheme(themeName as "light" | "dark" | "gruvbox" | "blue" | "monochrome")}
-                className="capitalize"
-              >
-                {themeName}
-              </ButtonDotlists>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h3 className="text-lg font-medium">simple mode</h3>
-          <p className="text-sm text-muted-foreground">
-            hide advanced features for a cleaner interface.
-          </p>
-          <div className="flex items-center space-x-2 mt-2">
-            <Switch
-              id="simple-mode"
-              checked={isSimpleMode}
-              onCheckedChange={setIsSimpleMode}
-            />
-            <Label htmlFor="simple-mode">enable simple mode</Label>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-
-  // The backdrop. Clicks here will close the modal.
-  return createPortal(
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-      }}
-      onClick={onClose}
-    >
-      {modalContent}
-    </motion.div>,
-    document.body,
+      <View className="flex-1 justify-center items-center bg-black/50">
+        <View className="bg-background p-8 rounded-lg shadow-lg w-full max-w-md relative">
+          <Text className="text-2xl font-bold mb-4">settings</Text>
+          <TouchableOpacity
+            onPress={onClose}
+            className="absolute top-4 right-4 p-1 rounded-full"
+            aria-label="Close settings"
+          >
+            <X className="h-6 w-6 text-foreground" />
+          </TouchableOpacity>
+          <View className="space-y-6">
+            <View>
+              <Text className="text-lg font-medium">theme</Text>
+              <Text className="text-sm text-muted-foreground">
+                select a color theme for the application.
+              </Text>
+              <View className="flex flex-row flex-wrap gap-2 mt-2">
+                {THEMES.map((themeName) => (
+                  <ButtonDotlists
+                    key={themeName}
+                    variant={theme === themeName ? "secondary" : "outline"}
+                    onPress={() => setTheme(themeName as "light" | "dark" | "gruvbox" | "blue" | "monochrome")}
+                    className="capitalize"
+                  >
+                    <Text>{themeName}</Text>
+                  </ButtonDotlists>
+                ))}
+              </View>
+            </View>
+            <View>
+              <Text className="text-lg font-medium">simple mode</Text>
+              <Text className="text-sm text-muted-foreground">
+                hide advanced features for a cleaner interface.
+              </Text>
+              <View className="flex flex-row items-center space-x-2 mt-2">
+                <Switch
+                  value={isSimpleMode}
+                  onValueChange={setIsSimpleMode}
+                />
+                <Label>enable simple mode</Label>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </Modal>
   );
 }

@@ -23,7 +23,7 @@ import {
   List,
   Menu,
   Settings as SettingsIcon,
-} from "lucide-react";
+} from "lucide-react-native";
 import { Text, View } from "react-native";
 
 type ConvexItem = Doc<"items"> & { uuid: Id<"items"> };
@@ -71,8 +71,8 @@ export function StatusBar({
   if (!selectedList) {
     return (
       <View className="w-full h-[10vh] p-3">
-        <View className="rounded-b-2xl rounded-t-lg border-3">
-          <View className="flex px-3 py-1 items-center">
+        <View className="rounded-b-2xl rounded-t-lg border-2">
+          <View className="flex flex-row px-3 py-1 items-center">
             <Text className="text-lg text-muted-foreground">no list selected.</Text>
           </View>
         </View>
@@ -91,71 +91,67 @@ export function StatusBar({
 
   return (
     <View className={clsx("w-full h-[10vh] p-3 transition-all duration-300")}>
-      <View className="rounded-b-2xl rounded-t-lg border-3">
-        <View className="flex px-3 py-1 items-center">
+      <View className="rounded-b-2xl rounded-t-lg border-2">
+        <View className="flex flex-row px-3 py-1 items-center">
           {!isSimpleMode && (
             <>
               <ButtonDotlists
                 variant="ghost"
                 size="icon"
-                onClick={() => setIsMobileDrawerOpen(true)}
+                onPress={() => setIsMobileDrawerOpen(true)}
                 className="mr-2 md:hidden"
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-5 w-5 text-foreground" />
               </ButtonDotlists>
               {!isDesktopSidebarOpen && (
                 <ButtonDotlists
                   variant="ghost"
                   size="icon"
-                  onClick={() => setIsDesktopSidebarOpen(true)}
+                  onPress={() => setIsDesktopSidebarOpen(true)}
                   className="mr-2 hidden md:block"
                 >
-                  <ChevronsRight className="h-5 w-5" />
+                  <ChevronsRight className="h-5 w-5 text-foreground" />
                 </ButtonDotlists>
               )}
             </>
           )}
           <Input
-            id="list-name-input"
-            className="w-full text-xl px-0 border-none bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 font-heading"
+            className="w-full text-xl px-0 border-none bg-transparent font-heading text-foreground"
             value={listName}
-            onChange={(e) => setListName(e.target.value)}
-            onBlur={(e) => handleListNameChange(e.target.value)}
-            autoComplete="off"
+            onChangeText={setListName}
+            onBlur={() => handleListNameChange(listName)}
           />
-          <View className="flex items-center">
+          <View className="flex flex-row items-center">
             {!isSimpleMode && (
               <>
                 <ButtonDotlists
                   variant={viewMode === "list" ? "secondary" : "ghost"}
                   size="icon"
-                  onClick={() => setViewMode("list")}
+                  onPress={() => setViewMode("list")}
                 >
-                  <List className="h-5 w-5" />
+                  <List className="h-5 w-5 text-foreground" />
                 </ButtonDotlists>
                 <ButtonDotlists
                   variant={viewMode === "gantt" ? "secondary" : "ghost"}
                   size="icon"
-                  onClick={() => setViewMode("gantt")}
+                  onPress={() => setViewMode("gantt")}
                 >
-                  <BarChart3 className="h-5 w-5" />
+                  <BarChart3 className="h-5 w-5 text-foreground" />
                 </ButtonDotlists>
               </>
             )}
           </View>
           <Notifications />
-          <ButtonDotlists variant="ghost" size="icon" onClick={onSettingsClick}>
-            <SettingsIcon className="h-5 w-5" />
+          <ButtonDotlists variant="ghost" size="icon" onPress={onSettingsClick}>
+            <SettingsIcon className="h-5 w-5 text-foreground" />
           </ButtonDotlists>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger>
               <ButtonDotlists
                 variant="ghost"
-                className="!ring-none !border-none !outline-none"
                 size="icon"
-                tabIndex={-1}
               >
-                <ChevronDown className="w-5 w-5" />
+                <ChevronDown className="w-5 text-foreground" />
               </ButtonDotlists>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="p-3 rounded-lg">
@@ -164,34 +160,33 @@ export function StatusBar({
                   {lists.map((list) => (
                     <DropdownMenuItem
                       key={list.id}
-                      onClick={() => {
+                      onSelect={() => {
                         setSelectedListId(list.id);
                         setListName(list.name);
                       }}
                     >
-                      {list.name}
+                      <Text className="text-foreground">{list.name}</Text>
                     </DropdownMenuItem>
                   ))}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleCreateList}>
-                    create new list
+                  <DropdownMenuItem onSelect={handleCreateList}>
+                    <Text className="text-foreground">create new list</Text>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                 </>
               )}
-              <DropdownMenuItem key="log-out" onClick={signOut}>
-                log out
+              <DropdownMenuItem key="log-out" onSelect={signOut}>
+                <Text className="text-foreground">log out</Text>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </View>
-        <View className="flex h-12 w-full rounded-b-2xl overflow-hidden">
+        <View className="flex flex-row h-2 w-full rounded-b-2xl overflow-hidden">
           <View
             className="transition-all duration-100"
             style={{
               width: `${redPct}%`,
               backgroundColor: redCount > 0 ? "#ef4444" : "transparent",
-              //transition: "width 0.3s",
             }}
           />
           <View
@@ -199,7 +194,6 @@ export function StatusBar({
             style={{
               width: `${yellowPct}%`,
               backgroundColor: yellowCount > 0 ? "#fde047" : "transparent",
-              //transition: "width 0.3s",
             }}
           />
           <View
@@ -207,7 +201,6 @@ export function StatusBar({
             style={{
               width: `${greenPct}%`,
               backgroundColor: greenCount > 0 ? "#22c55e" : "transparent",
-              //transition: "width 0.3s",
             }}
           />
         </View>

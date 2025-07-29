@@ -1,5 +1,5 @@
 // src/components/LandingPage.tsx
-import { CheckSquare, GanttChartSquare, Users } from "lucide-react";
+import { CheckSquare, GanttChartSquare, Users } from "lucide-react-native";
 import { Image, ScrollView, Text, View } from "react-native";
 import "../app/global.css";
 import { SignIn } from "./auth/SignIn";
@@ -9,7 +9,7 @@ export function LandingPage() {
     <ScrollView className="min-h-screen flex flex-col bg-background text-foreground">
       <View className="p-4">
         <View className="container mx-auto flex flex-row items-center">
-          <Image source={require("@/assets/favicon-32x32.png")} alt="logo" className="h-8 w-8 mr-2" />
+          <Image source={require("@/assets/favicon-32x32.png")} className="h-8 w-8 mr-2" />
           <Text className="font-bold text-xl font-heading text-foreground">dotlists</Text>
         </View>
       </View>
@@ -28,13 +28,13 @@ export function LandingPage() {
           </View>
         </View>
 
-        <View id="features" className="py-20 bg-muted-50">
-          <View className="container mx-auto text-center items-center justify-center">
+        <View className="py-20 bg-muted-50">
+          <View className="container mx-auto items-center justify-center">
             <Text className="text-4xl font-bold font-heading text-center text-foreground mb-12">
               everything you need to get work done
             </Text>
-            <View className="grid md:grid-cols-3 gap-12">
-              <View className="flex flex-col items-center">
+            <View className="flex flex-col md:flex-row gap-12">
+              <View className="flex flex-col items-center p-4">
                 <GanttChartSquare className="h-12 w-12 mb-4 text-primary" />
                 <Text className="text-2xl font-bold font-heading text-center text-foreground mb-2">
                   visual project planning
@@ -44,7 +44,7 @@ export function LandingPage() {
                   visualize timelines, dependencies, and progress at a glance.
                 </Text>
               </View>
-              <View className="flex flex-col items-center">
+              <View className="flex flex-col items-center p-4">
                 <CheckSquare className="h-12 w-12 mb-4 text-primary" />
                 <Text className="text-2xl font-bold font-heading text-center text-foreground mb-2">
                   detailed task management
@@ -55,7 +55,7 @@ export function LandingPage() {
                   cracks.
                 </Text>
               </View>
-              <View className="flex flex-col items-center">
+              <View className="flex flex-col items-center p-4">
                 <Users className="h-12 w-12 mb-4 text-primary" />
                 <Text className="text-2xl font-bold font-heading text-center text-foreground mb-2">
                   seamless collaboration
@@ -69,16 +69,16 @@ export function LandingPage() {
           </View>
         </View>
 
-        <View id="about" className="py-20">
+        <View className="py-20">
           <View className="container mx-auto text-center">
             <Text className="text-4xl font-bold font-heading text-center text-foreground mb-12">
               about us
             </Text>
             <View className="max-w-3xl mx-auto">
-              <Text className="text-muted-foreground text-center mb-4 font-sans text-base">
+              <Text className="text-muted-foreground text-center mb-4 font-sans text-base p-4">
                 the original idea for dotlib came from us looking for team management tools, all of them required you to pay for basic features, which is hard to afford for small teams. we wanted to create a tool that is free, open source, and easy to use which could help teams of all sizes to manage their work effectively and simply. 
               </Text>
-              <Text className="text-muted-foreground text-center font-sans text-base">
+              <Text className="text-muted-foreground text-center font-sans text-base p-4">
                 our development team is composed of students who all met through VEX robotics, and we're passionate about building tools that make work easier and more enjoyable. we believe in the power of collaboration and open source, and we're excited to share dotlib with the world for free.
               </Text>
             </View>

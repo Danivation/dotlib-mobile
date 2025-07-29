@@ -4,8 +4,8 @@ import { useAuthActions } from "@convex-dev/auth/react";
 import { useConvexAuth } from "convex/react";
 import { makeRedirectUri } from "expo-auth-session";
 import { openAuthSessionAsync } from "expo-web-browser";
-import { Chrome, Github } from "lucide-react";
-import { Platform, View } from "react-native";
+import { Chrome, Github } from "lucide-react-native";
+import { Platform, View, Text } from "react-native";
 
 const redirectTo = makeRedirectUri();
 
@@ -29,18 +29,18 @@ export function SignIn() {
       {!isLoading && !isAuthenticated && (
         <View className="flex flex-col gap-4 w-full">
           <ButtonDotlists 
-            onClick={handleSignIn}
-            className="bg-primary text-primary-foreground px-8 py-4 rounded-lg flex items-center justify-center gap-3 text-lg font-medium transition-colors font-sans"
+            onPress={handleSignIn}
+            className="bg-primary text-primary-foreground px-8 py-4 rounded-lg flex flex-row items-center justify-center gap-3 text-lg font-medium transition-colors font-sans"
           >
-            <Github size={24} />
-            continue with github
+            <Github size={24} color="black" />
+            <Text className="text-primary-foreground">continue with github</Text>
           </ButtonDotlists>
           <ButtonDotlists 
-            onClick={handleSignIn}
-            className="bg-primary text-primary-foreground px-8 py-4 rounded-lg flex items-center justify-center gap-3 text-lg font-medium transition-colors font-sans"
+            onPress={handleSignIn}
+            className="bg-primary text-primary-foreground px-8 py-4 rounded-lg flex flex-row items-center justify-center gap-3 text-lg font-medium transition-colors font-sans"
           >
-            <Chrome size={24} />
-            continue with google
+            <Chrome size={24} color="black" />
+            <Text className="text-primary-foreground">continue with google</Text>
           </ButtonDotlists>
         </View>
       )}

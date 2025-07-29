@@ -2,6 +2,7 @@
 import { api } from "@/lib/convex";
 import { useMutation } from "convex/react";
 import { useState } from "react";
+import { View, Text } from "react-native";
 import "../app/global.css";
 import { ButtonDotlists } from "./ui/button";
 import { Input } from "./ui/input";
@@ -25,25 +26,26 @@ export function CreateUsername() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <div className="w-full max-w-xs">
-        <h1 className="text-2xl font-bold mb-4 text-center">
+    <View className="flex flex-col items-center justify-center h-screen">
+      <View className="w-full max-w-xs">
+        <Text className="text-2xl font-bold mb-4 text-center">
           Choose a Username
-        </h1>
-        <p className="text-muted-foreground mb-6 text-center">
+        </Text>
+        <Text className="text-muted-foreground mb-6 text-center">
           This will be your unique name for sharing and invitations.
-        </p>
+        </Text>
         <Input
           value={username}
-          onChange={(e) => setUsername(e.target.value.toLowerCase())}
+          onChangeText={(text) => setUsername(text.toLowerCase())}
           placeholder="username"
           className="mb-2"
+          autoCapitalize="none"
         />
-        <ButtonDotlists onClick={handleCreateProfile} className="w-full">
-          Create Profile
+        <ButtonDotlists onPress={handleCreateProfile} className="w-full">
+          <Text>Create Profile</Text>
         </ButtonDotlists>
-        {error && <p className="text-red-500 mt-2 text-sm">{error}</p>}
-      </div>
-    </div>
+        {error && <Text className="text-red-500 mt-2 text-sm">{error}</Text>}
+      </View>
+    </View>
   );
 }

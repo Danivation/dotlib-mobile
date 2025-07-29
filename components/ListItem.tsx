@@ -9,7 +9,6 @@ import { api } from "@/lib/convex";
 import clsx from "clsx";
 import { useAction, useMutation, useQuery } from "convex/react";
 import { format } from "date-fns";
-import { AnimatePresence, motion } from "framer-motion";
 import {
   Calendar as CalendarIcon,
   ChevronDown,
@@ -19,11 +18,9 @@ import {
   Sparkles,
   Trash2,
   User,
-} from "lucide-react";
+} from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
-import { DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css";
-import { Text, TouchableWithoutFeedback, View } from "react-native";
+import { Text, TouchableOpacity, View, TextInput } from "react-native";
 import "../app/global.css";
 import { CommentSection } from "./CommentSection";
 import { SubtaskItem } from "./SubtaskItem";
@@ -39,7 +36,6 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
 
 interface ListItemProps {
   node: Doc<"items"> & { uuid: Id<"items"> };
@@ -71,8 +67,7 @@ export function ListItem({
   const [isCommenting, setIsCommenting] = useState(false);
   const [isSubtasksVisible, setIsSubtasksVisible] = useState(false);
   const [newSubtaskText, setNewSubtaskText] = useState("");
-  const [isMultiLine, setIsMultiLine] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const textareaRef = useRef<TextInput>(null);
   const breakdownTask = useAction(api.gemini.breakdownTask);
   const teamMembers = useQuery(
     api.teams.getTeamMembers,
@@ -80,20 +75,6 @@ export function ListItem({
   );
   const subtasks = useQuery(api.subtasks.getSubtasks, { parentId: node.uuid });
   const createSubtask = useMutation(api.subtasks.createSubtask);
-
-  useEffect(() => {
-    const textarea = textareaRef.current;
-    if (textarea) {
-      const checkMultiLine = () => {
-        const lineHeight = parseFloat(window.getComputedStyle(textarea).lineHeight);
-        setIsMultiLine(textarea.scrollHeight > lineHeight + 2);
-      };
-      const resizeObserver = new ResizeObserver(checkMultiLine);
-      resizeObserver.observe(textarea);
-      checkMultiLine(); // Initial check
-      return () => resizeObserver.disconnect();
-    }
-  }, [text]);
 
   const handleBreakdownTask = async () => {
     const subtaskStrings = await breakdownTask({
@@ -116,7 +97,6 @@ export function ListItem({
   useEffect(() => {
     if (node.uuid === focusedItemId) {
       textareaRef.current?.focus();
-      textareaRef.current?.select();
       setFocusedItemId(null);
     }
   }, [focusedItemId, node.uuid, setFocusedItemId]);
@@ -172,22 +152,16 @@ export function ListItem({
   );
 
   return (
-    <motion.li
-      layout
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      transition={{ layout: { duration: 0.2, ease: "easeOut" } }}
+    <View
       className="flex flex-col hover:bg-muted/50 rounded-lg my-1 p-1"
       key={node.uuid}
-      id={node.uuid}
     >
-      <View className="flex items-center">
+      <View className="flex flex-row items-center">
         <ButtonDotlists
           variant="ghost"
           size="icon"
           className="h-6 w-6"
-          onClick={() => setIsSubtasksVisible(!isSubtasksVisible)}
+          onPress={() => setIsSubtasksVisible(!isSubtasksVisible)}
         >
           {isSubtasksVisible ? (
             <ChevronDown className="h-4 w-4" />
@@ -195,7 +169,7 @@ export function ListItem({
             <ChevronRight className="h-4 w-4" />
           )}
         </ButtonDotlists>
-        <TouchableWithoutFeedback
+        <TouchableOpacity
           onPress={() => {
             const currentState = node.state as keyof typeof stateOrder;
             const newState = (stateOrder[currentState] + 1) % 3;
@@ -204,7 +178,6 @@ export function ListItem({
             });
           }}
           onLongPress={(e) => {
-            e.preventDefault();
             const currentState = node.state as keyof typeof stateOrder;
             const newState = (stateOrder[currentState] + 2) % 3;
             handleUpdateItem(node.uuid, {
@@ -212,42 +185,31 @@ export function ListItem({
             });
           }}
           className={clsx(
-            "mx-2 transition-all duration-100 cursor-pointer hover:blur-xs flex-shrink-0",
-            isMultiLine
-              ? "w-6 self-stretch rounded-full"
-              : "w-6 h-6 rounded-full",
+            "mx-2 transition-all duration-100 flex-shrink-0 w-6 h-6 rounded-full",
             colorClass,
           )}
-        >
-          <View></View>
-        </TouchableWithoutFeedback>
-        <Textarea
+        />
+        <TextInput
           ref={textareaRef}
           value={text}
-          onChange={(e) => setText(e.target.value)}
-          className="text-sm md:text-base self-center focus:outline-none w-full focus:ring-0 border-none bg-transparent resize-none"
-          rows={1}
-          onInput={(e) => {
-            const textarea = e.currentTarget;
-            textarea.style.height = "auto";
-            textarea.style.height = `${textarea.scrollHeight}px`;
-          }}
+          onChangeText={setText}
+          className="text-sm md:text-base self-center w-full border-none bg-transparent text-foreground"
+          multiline
           onBlur={(e) => {
-            const trimmed = e.currentTarget.value.trim();
+            const trimmed = e.nativeEvent.text.trim();
             if (trimmed === "") {
               handleDeleteItem(node.uuid);
             } else if (trimmed !== node.text) {
               handleUpdateItem(node.uuid, { text: trimmed });
             }
           }}
-          onKeyDown={(e) => {
-            if (e.key === "Backspace" && text === "") {
-              e.preventDefault();
+          onKeyPress={({ nativeEvent: { key: e } }) => {
+            if (e === "Backspace" && text === "") {
               handleDeleteItem(node.uuid);
             }
           }}
         />
-        <View className="flex items-center self-center">
+        <View className="flex flex-row items-center self-center">
           {node.dueDate && (
             <Text className="text-xs text-gray-500 mr-2 whitespace-nowrap">
               {format(new Date(node.dueDate), "MMM d")}
@@ -257,27 +219,27 @@ export function ListItem({
             variant="ghost"
             size="icon"
             className="h-8 w-8"
-            onClick={() => handleDeleteItem(node.uuid)}
+            onPress={() => handleDeleteItem(node.uuid)}
           >
             <Trash2 className="h-4 w-4 text-red-500" />
           </ButtonDotlists>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger>
               <ButtonDotlists variant="ghost" size="icon" className="h-8 w-8">
-                <MoreVertical className="h-4 w-4" />
+                <MoreVertical className="h-4 w-4 text-foreground" />
               </ButtonDotlists>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => setIsCommenting(!isCommenting)}>
-                <MessageSquare className="mr-2 h-4 w-4" />
-                {isCommenting ? "hide comments" : "show comments"}
+              <DropdownMenuItem onSelect={() => setIsCommenting(!isCommenting)}>
+                <MessageSquare className="mr-2 h-4 w-4 text-foreground" />
+                <Text className="text-foreground">{isCommenting ? "hide comments" : "show comments"}</Text>
               </DropdownMenuItem>
 
               {!isSimpleMode && teamId && (
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger>
-                    <User className="mr-2 h-4 w-4" />
-                    {assignee ? `assign: ${assignee.username}` : "assign"}
+                    <User className="mr-2 h-4 w-4 text-foreground" />
+                    <Text className="text-foreground">{assignee ? `assign: ${assignee.username}` : "assign"}</Text>
                   </DropdownMenuSubTrigger>
                   <DropdownMenuSubContent>
                     <DropdownMenuItem
@@ -285,7 +247,7 @@ export function ListItem({
                         handleUpdateItem(node.uuid, { assigneeId: undefined })
                       }
                     >
-                      unassigned
+                      <Text className="text-foreground">unassigned</Text>
                     </DropdownMenuItem>
                     {teamMembers?.map((member) => (
                       <DropdownMenuItem
@@ -296,7 +258,7 @@ export function ListItem({
                           })
                         }
                       >
-                        {member.username}
+                        <Text className="text-foreground">{member.username}</Text>
                       </DropdownMenuItem>
                     ))}
                   </DropdownMenuSubContent>
@@ -304,29 +266,23 @@ export function ListItem({
               )}
 
               <Popover>
-                <PopoverTrigger asChild>
-                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    set due date
-                  </DropdownMenuItem>
+                <PopoverTrigger>
+                    <View className="flex-row items-center p-2">
+                        <CalendarIcon className="mr-2 h-4 w-4 text-foreground" />
+                        <Text className="text-foreground">set due date</Text>
+                    </View>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
-                  <DayPicker
-                    mode="single"
-                    selected={node.dueDate ? new Date(node.dueDate) : undefined}
-                    onSelect={(date) =>
-                      handleUpdateItem(node.uuid, { dueDate: date?.getTime() })
-                    }
-                  />
+                  <Text className="text-foreground">Date picker not available on mobile</Text>
                 </PopoverContent>
               </Popover>
 
               {!isSimpleMode && (
                 <>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleBreakdownTask}>
-                    <Sparkles className="mr-2 h-4 w-4" />
-                    breakdown task
+                  <DropdownMenuItem onSelect={handleBreakdownTask}>
+                    <Sparkles className="mr-2 h-4 w-4 text-foreground" />
+                    <Text className="text-foreground">breakdown task</Text>
                   </DropdownMenuItem>
                 </>
               )}
@@ -334,40 +290,31 @@ export function ListItem({
           </DropdownMenu>
         </View>
       </View>
-      <AnimatePresence initial={false}>
-        {isSubtasksVisible && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="ml-12 mt-2 overflow-hidden"
+      {isSubtasksVisible && (
+          <View
+            className="ml-12 mt-2"
           >
-            <ul>
+            <View>
               {subtasks?.map((subtask) => (
                 <SubtaskItem key={subtask._id} subtask={subtask} />
               ))}
-            </ul>
-            <View className="flex items-center mt-2">
+            </View>
+            <View className="flex flex-row items-center mt-2">
               <Input
                 value={newSubtaskText}
-                onChange={(e) => setNewSubtaskText(e.target.value)}
+                onChangeText={setNewSubtaskText}
                 placeholder="new subtask..."
-                className="h-8"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleCreateSubtask();
-                  }
-                }}
+                className="h-8 flex-1"
+                onSubmitEditing={handleCreateSubtask}
               />
-              <ButtonDotlists onClick={handleCreateSubtask} size="sm" className="ml-2">
-                add
+              <ButtonDotlists onPress={handleCreateSubtask} size="sm" className="ml-2">
+                <Text>add</Text>
               </ButtonDotlists>
             </View>
-          </motion.div>
+          </View>
         )}
-      </AnimatePresence>
       {isCommenting && <CommentSection itemId={node.uuid} />}
-    </motion.li>
+    </View>
   );
 }
 

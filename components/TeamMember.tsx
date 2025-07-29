@@ -2,6 +2,7 @@
 import type { Doc } from "@/lib/convex";
 import { api } from "@/lib/convex";
 import { useMutation, useQuery } from "convex/react";
+import { View, Text } from "react-native";
 import "../app/global.css";
 import { ButtonDotlists } from "./ui/button";
 
@@ -19,24 +20,24 @@ export function TeamMember({ team, viewerRole }: TeamMemberProps) {
   };
 
   return (
-    <ul className="pl-4 mt-2 space-y-1">
+    <View className="pl-4 mt-2 space-y-1">
       {members?.map((member) => (
-        <li key={member._id} className="flex items-center justify-between">
-          <span className="text-sm text-foreground">
+        <View key={member._id} className="flex flex-row items-center justify-between">
+          <Text className="text-sm text-foreground">
             {member.username} ({member.role})
-          </span>
+          </Text>
           {viewerRole === "admin" && member.userId !== team.ownerId && (
             <ButtonDotlists
               variant="ghost"
               size="sm"
               className="h-6"
-              onClick={() => handleRemoveMember(member.userId)}
+              onPress={() => handleRemoveMember(member.userId)}
             >
-              remove
+              <Text>remove</Text>
             </ButtonDotlists>
           )}
-        </li>
+        </View>
       ))}
-    </ul>
+    </View>
   );
 }

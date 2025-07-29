@@ -1,6 +1,6 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
-import { cva } from "class-variance-authority"
+import { cva } from "class-variance-authority";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -10,7 +10,7 @@ export function debounce<F extends (...args: any[]) => any>(
   func: F,
   waitFor: number,
 ) {
-  let timeout: NodeJS.Timeout;
+  let timeout: ReturnType<typeof setTimeout>;
 
   return (...args: Parameters<F>): Promise<ReturnType<F>> =>
     new Promise((resolve) => {

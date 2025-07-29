@@ -7,10 +7,9 @@ import { TeamManager } from "@/components/TeamManager";
 import { useSettings } from "@/contexts/SettingsContext";
 import clsx from "clsx";
 import { useMutation, useQuery } from "convex/react";
-import { AnimatePresence } from "framer-motion";
-import { ChevronsLeft, Trash2 } from "lucide-react";
+import { ChevronsLeft, Trash2 } from "lucide-react-native";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Text, TouchableOpacity, View, Modal } from "react-native";
 import "./global.css";
 
 import { ButtonDotlists } from "@/components/ui/button";
@@ -86,20 +85,6 @@ export default function AuthenticatedApp() {
   }, [createList]);
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.ctrlKey && event.shiftKey && event.key === "L") {
-        event.preventDefault();
-        handleCreateList();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [handleCreateList]);
-
-  useEffect(() => {
     if (lists.length > 0 && (!selectedListId || !lists.some(list => list.id === selectedListId))) {
       setSelectedListId(lists[0].id);
       setListName(lists[0].name);
@@ -115,24 +100,6 @@ export default function AuthenticatedApp() {
       setFocusedItemId(newItemId);
     }
   }, [createItem, selectedListId]);
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.ctrlKey && event.shiftKey && event.key === "L") {
-        event.preventDefault();
-        handleCreateList();
-      }
-      if (event.ctrlKey && event.shiftKey && event.key === "N") {
-        event.preventDefault();
-        handleAddItem("New Task");
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [handleCreateList, handleAddItem]);
 
   const handleUpdateItem = async (
     id: Id<"items">,
@@ -175,7 +142,9 @@ export default function AuthenticatedApp() {
     return (
       <View className="flex flex-col items-center justify-center h-screen">
         <Text className="text-4xl font-bold mb-8">no lists yet!</Text>
-        <ButtonDotlists onClick={() => handleCreateList()}>create a new list</ButtonDotlists>
+        <ButtonDotlists onPress={() => handleCreateList()}>
+          <Text>create a new list</Text>
+        </ButtonDotlists>
       </View>
     );
   }
@@ -184,14 +153,14 @@ export default function AuthenticatedApp() {
 
   const sidebarContent = (
     <>
-      <View className="flex items-center justify-between mb-4">
+      <View className="flex flex-row items-center justify-between mb-4">
         <Text className="text-xl font-bold font-heading">personal lists</Text>
         <ButtonDotlists
           variant="ghost"
           size="icon"
-          onClick={() => isMobileDrawerOpen ? setIsMobileDrawerOpen(false) : setIsDesktopSidebarOpen(false)}
+          onPress={() => isMobileDrawerOpen ? setIsMobileDrawerOpen(false) : setIsDesktopSidebarOpen(false)}
         >
-          <ChevronsLeft className="h-5 w-5" />
+          <ChevronsLeft className="h-5 w-5 text-foreground" />
         </ButtonDotlists>
       </View>
       <FlatList
@@ -199,9 +168,9 @@ export default function AuthenticatedApp() {
         keyExtractor={list => list.id}
         renderItem = {({item: list}) => (
           <TouchableOpacity
-            className={`flex items-center justify-between cursor-pointer p-2 rounded ${
+            className={`flex flex-row items-center justify-between p-2 rounded ${
               selectedListId === list.id
-                ? "bg-muted/50 text-muted-foreground"
+                ? "bg-muted/50"
                 : ""
             }`}
             onPress={() => {
@@ -210,11 +179,11 @@ export default function AuthenticatedApp() {
               setIsMobileDrawerOpen(false);
             }}
           >
-            <Text>{list.name}</Text>
+            <Text className={selectedListId === list.id ? "text-muted-foreground" : "text-foreground"}>{list.name}</Text>
             <ButtonDotlists
               variant="ghost"
               size="icon"
-              onClick={(e) => {
+              onPress={(e) => {
                 e.stopPropagation();
                 handleDeleteList(list.id);
               }}
@@ -225,12 +194,12 @@ export default function AuthenticatedApp() {
           </TouchableOpacity>
         )}
       />
-      <ButtonDotlists variant="ghost" size="sm" onClick={() => handleCreateList()} className="mt-1">
-        + new personal list <span className="ml-2 text-xs text-muted-foreground">(ctrl+shift+l)</span>
+      <ButtonDotlists variant="ghost" size="sm" onPress={() => handleCreateList()} className="mt-1">
+        <Text>+ new personal list <Text className="ml-2 text-xs text-muted-foreground">(ctrl+shift+l)</Text></Text>
       </ButtonDotlists>
       {!isSimpleMode && (
         <>
-          <hr className="my-4" />
+          <View className="my-4 h-px bg-border" />
           {validTeams && (
             <TeamManager
               teams={validTeams}
@@ -252,42 +221,38 @@ export default function AuthenticatedApp() {
 
   return (
     <>
-      <View className="relative md:flex h-screen bg-background text-foreground">
+      <View className="relative md:flex-row h-screen bg-background text-foreground">
         {/* Mobile Drawer */}
-        <TouchableOpacity
-          className={clsx(
-            "fixed inset-0 z-20 bg-black bg-opacity-50 transition-opacity md:hidden",
-            {
-              "opacity-100 pointer-events-auto": isMobileDrawerOpen,
-              "opacity-0 pointer-events-none": !isMobileDrawerOpen,
-            },
-          )}
-          onPress={() => setIsMobileDrawerOpen(false)}
-        ><Text>Mobile drawer</Text> </TouchableOpacity>
-        <View
-          className={clsx(
-            "fixed top-0 left-0 h-full bg-background z-30 w-3/4 p-4 border-r overflow-y-auto transition-transform duration-300 md:hidden",
-            {
-              "translate-x-0": isMobileDrawerOpen,
-              "-translate-x-full": !isMobileDrawerOpen,
-            },
-          )}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isMobileDrawerOpen}
+          onRequestClose={() => {
+            setIsMobileDrawerOpen(!isMobileDrawerOpen);
+          }}
         >
-          {sidebarContent}
-        </View>
+            <View className="flex-1 flex-row">
+                <View className="w-3/4 h-full bg-background p-4 border-r border-border">
+                    {sidebarContent}
+                </View>
+                <TouchableOpacity className="w-1/4 h-full" onPress={() => setIsMobileDrawerOpen(false)} />
+            </View>
+        </Modal>
 
         {/* Desktop Sidebar */}
-        <View
-          className={clsx(
-            "hidden md:block border-r h-full overflow-y-auto transition-all duration-300",
-            {
-              "w-1/4 p-4": isDesktopSidebarOpen,
-              "w-0 p-0 border-0": !isDesktopSidebarOpen,
-            },
-          )}
-        >
-          {isDesktopSidebarOpen && sidebarContent}
-        </View>
+        {isDesktopSidebarOpen && (
+            <View
+            className={clsx(
+                "hidden md:block border-r border-border h-full overflow-y-auto transition-all duration-300",
+                {
+                "w-1/4 p-4": isDesktopSidebarOpen,
+                "w-0 p-0 border-0": !isDesktopSidebarOpen,
+                },
+            )}
+            >
+            {sidebarContent}
+            </View>
+        )}
 
         {/* Main Content */}
         <View
@@ -331,16 +296,13 @@ export default function AuthenticatedApp() {
           </View>
         </View>
       </View>
-      <AnimatePresence>
-        {isSettingsOpen && (
-          <Settings
-            onClose={() => {
-              console.log("onClose called");
-              setIsSettingsOpen(false);
-            }}
-          />
-        )}
-      </AnimatePresence>
+      <Settings
+        isOpen={isSettingsOpen}
+        onClose={() => {
+          console.log("onClose called");
+          setIsSettingsOpen(false);
+        }}
+      />
     </>
   );
 }

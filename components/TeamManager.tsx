@@ -1,8 +1,9 @@
 import type { Doc } from "@/lib/convex";
 import { api } from "@/lib/convex";
 import { useMutation } from "convex/react";
-import { Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react-native";
 import { useState } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import "../app/global.css";
 import { TeamMember } from "./TeamMember";
 import { ButtonDotlists } from "./ui/button";
@@ -63,47 +64,47 @@ export function TeamManager({
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-4 font-heading">teams</h2>
+    <View>
+      <Text className="text-xl font-bold mb-4 font-heading">teams</Text>
       {teams.map((team) =>
         team ? (
-          <div key={team._id} className="mb-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-bold font-heading">{team.name}</h3>
+          <View key={team._id} className="mb-4">
+            <View className="flex flex-row items-center justify-between">
+              <Text className="font-bold font-heading">{team.name}</Text>
               {team.role === "admin" && (
                 <ButtonDotlists
                   variant="ghost"
                   size="icon"
-                  onClick={() => handleDeleteTeam(team._id)}
+                  onPress={() => handleDeleteTeam(team._id)}
                   className="h-6 w-6"
                 >
                   <Trash2 className="h-4 w-4 text-red-500" />
                 </ButtonDotlists>
               )}
-            </div>
+            </View>
             <TeamMember team={team} viewerRole={team.role} />
-            <ul>
+            <View>
               {teamLists
                 .filter((list) => list.teamId === team._id)
                 .map((list) => (
-                  <li
+                  <TouchableOpacity
                     key={list._id}
-                    className={`flex items-center justify-between cursor-pointer p-2 rounded ${
+                    className={`flex flex-row items-center justify-between p-2 rounded ${
                       selectedListId === list._id
-                        ? "bg-muted/50 text-muted-foreground"
+                        ? "bg-muted/50"
                         : ""
                     }`}
-                    onClick={() => {
+                    onPress={() => {
                       setSelectedListId(list._id);
                       setListName(list.name);
                     }}
                   >
-                    <span>{list.name}</span>
+                    <Text className={selectedListId === list._id ? "text-muted-foreground" : "text-foreground"}>{list.name}</Text>
                     {team.role === "admin" && (
                       <ButtonDotlists
                         variant="ghost"
                         size="icon"
-                        onClick={(e) => {
+                        onPress={(e) => {
                           e.stopPropagation();
                           handleDeleteList(list._id);
                         }}
@@ -112,54 +113,54 @@ export function TeamManager({
                         <Trash2 className="h-4 w-4 text-red-500" />
                       </ButtonDotlists>
                     )}
-                  </li>
+                  </TouchableOpacity>
                 ))}
-            </ul>
+            </View>
             <ButtonDotlists
               variant="ghost"
               size="sm"
-              onClick={() => handleCreateList(team._id)}
+              onPress={() => handleCreateList(team._id)}
               className="mt-1"
             >
-              + new team list
+              <Text>+ new team list</Text>
             </ButtonDotlists>
             {team.role === "admin" && (
-              <div className="mt-2">
+              <View className="mt-2">
                 <Input
                   value={
                     selectedTeamForInvite === team._id ? inviteeUsername : ""
                   }
-                  onChange={(e) => {
+                  onChangeText={(text) => {
                     setSelectedTeamForInvite(team._id);
-                    setInviteeUsername(e.target.value);
+                    setInviteeUsername(text);
                   }}
                   placeholder="invite user..."
                   className="h-8"
                 />
                 <ButtonDotlists
-                  onClick={() => handleSendInvitation(team._id)}
+                  onPress={() => handleSendInvitation(team._id)}
                   size="sm"
                   className="mt-1"
                 >
-                  invite
+                  <Text>invite</Text>
                 </ButtonDotlists>
-              </div>
+              </View>
             )}
-          </div>
+          </View>
         ) : null,
       )}
-      <div className="mt-4 pt-4 border-t">
+      <View className="mt-4 pt-4 border-t">
         <Input
           value={newTeamName}
-          onChange={(e) => setNewTeamName(e.target.value)}
+          onChangeText={setNewTeamName}
           placeholder="new team name..."
           className="mb-2"
         />
-        <ButtonDotlists onClick={handleCreateTeam} size="sm">
-          create team
+        <ButtonDotlists onPress={handleCreateTeam} size="sm">
+          <Text>create team</Text>
         </ButtonDotlists>
-      </div>
-    </div>
+      </View>
+    </View>
   );
 }
 

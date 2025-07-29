@@ -1,7 +1,8 @@
 // src/components/Notifications.tsx
 import { api } from "@/lib/convex";
 import { useMutation, useQuery } from "convex/react";
-import { Bell } from "lucide-react";
+import { Bell } from "lucide-react-native";
+import { View, Text } from "react-native";
 import "../app/global.css";
 import { ButtonDotlists } from "./ui/button";
 import {
@@ -24,53 +25,57 @@ export function Notifications() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <ButtonDotlists variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
+      <DropdownMenuTrigger>
+        <View className="relative">
+          <Bell className="h-5 w-5 text-foreground" />
           {unreadCount > 0 && (
-            <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500" />
+            <View className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500" />
           )}
-        </ButtonDotlists>
+        </View>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-80">
         {unreadCount === 0 && (
-          <DropdownMenuItem disabled>no new notifications</DropdownMenuItem>
+          <DropdownMenuItem disabled>
+            <Text className="text-muted-foreground">no new notifications</Text>
+          </DropdownMenuItem>
         )}
         {notifications.map((n) => (
           <DropdownMenuItem
             key={n._id}
-            onClick={() => markAsRead({ notificationId: n._id })}
+            onSelect={() => markAsRead({ notificationId: n._id })}
           >
-            <div className="text-sm">
-              <span className="font-semibold">{n.actorName}</span>
-              {n.type === "assignment" && " assigned a task to you."}
-              {n.type === "comment" && " commented on a task."}
-            </div>
+            <View className="text-sm">
+              <Text className="text-foreground">
+                <Text className="font-semibold">{n.actorName}</Text>
+                {n.type === "assignment" && " assigned a task to you."}
+                {n.type === "comment" && " commented on a task."}
+              </Text>
+            </View>
           </DropdownMenuItem>
         ))}
         {invitations.length > 0 && notifications.length > 0 && <DropdownMenuSeparator />}
         {invitations.map((inv) => (
-          <div key={inv._id} className="p-2 text-sm">
-            <p>
-              <span className="font-semibold">{inv.inviterName}</span> invited you to join{" "}
-              <span className="font-semibold">{inv.teamName}</span>.
-            </p>
-            <div className="flex justify-end gap-2 mt-2">
+          <View key={inv._id} className="p-2 text-sm">
+            <Text className="text-foreground">
+              <Text className="font-semibold">{inv.inviterName}</Text> invited you to join{" "}
+              <Text className="font-semibold">{inv.teamName}</Text>.
+            </Text>
+            <View className="flex flex-row justify-end gap-2 mt-2">
               <ButtonDotlists
                 size="sm"
                 variant="outline"
-                onClick={() => declineInvitation({ invitationId: inv._id })}
+                onPress={() => declineInvitation({ invitationId: inv._id })}
               >
-                decline
+                <Text>decline</Text>
               </ButtonDotlists>
               <ButtonDotlists
                 size="sm"
-                onClick={() => acceptInvitation({ invitationId: inv._id })}
+                onPress={() => acceptInvitation({ invitationId: inv._id })}
               >
-                accept
+                <Text>accept</Text>
               </ButtonDotlists>
-            </div>
-          </div>
+            </View>
+          </View>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>

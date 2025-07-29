@@ -1,8 +1,7 @@
 import { useTheme } from "@/hooks/useTheme";
 import type { Doc, Id } from "@/lib/convex";
 import clsx from "clsx";
-import { AnimatePresence, motion } from "framer-motion";
-import { Text } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import "../app/global.css";
 import { ListItem } from "./ListItem";
 import { ButtonDotlists } from "./ui/button";
@@ -46,38 +45,39 @@ export function ListEditor({
   });
 
   return (
-    <motion.ul className="px-2 md:px-3 mb-0">
-      <motion.li
-        layout
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex justify-center my-2"
-      >
-        <ButtonDotlists
-          onClick={() => handleAddItem("new task", "red")}
-          variant="outline"
-          className={clsx(
-            "px-8",
-            theme === "blue" && "bg-blue-500 text-white hover:bg-blue-600"
-          )}
+    <FlatList
+      className="px-2 md:px-3 mb-0"
+      data={sortedNodes}
+      keyExtractor={(item) => item.uuid}
+      renderItem={({ item }) => (
+        <ListItem
+          node={item}
+          handleUpdateItem={handleUpdateItem}
+          handleDeleteItem={handleDeleteItem}
+          focusedItemId={focusedItemId}
+          setFocusedItemId={setFocusedItemId}
+          listId={state.id}
+          teamId={state.teamId}
+        />
+      )}
+      ListHeaderComponent={
+        <View
+          className="flex justify-center my-2"
         >
-          add new task <Text className={clsx("ml-2 text-xs", theme === "blue" ? "text-blue-200" : "text-muted-foreground")}> (ctrl+shift+n)</Text>
-        </ButtonDotlists>
-      </motion.li>
-      <AnimatePresence>
-        {sortedNodes.map((node) => (
-          <ListItem
-            key={node.uuid}
-            node={node}
-            handleUpdateItem={handleUpdateItem}
-            handleDeleteItem={handleDeleteItem}
-            focusedItemId={focusedItemId}
-            setFocusedItemId={setFocusedItemId}
-            listId={state.id}
-            teamId={state.teamId}
-          />
-        ))}
-      </AnimatePresence>
-    </motion.ul>
+          <ButtonDotlists
+            onPress={() => handleAddItem("new task", "red")}
+            variant="outline"
+            className={clsx(
+              "px-8",
+              theme === "blue" && "bg-blue-500 text-white hover:bg-blue-600"
+            )}
+          >
+            <Text className={clsx(theme === "blue" ? "text-white" : "text-foreground")}>
+              add new task <Text className={clsx("ml-2 text-xs", theme === "blue" ? "text-blue-200" : "text-muted-foreground")}> (ctrl+shift+n)</Text>
+            </Text>
+          </ButtonDotlists>
+        </View>
+      }
+    />
   );
 }

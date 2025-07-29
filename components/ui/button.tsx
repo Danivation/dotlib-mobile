@@ -1,29 +1,29 @@
-import { Slot } from "@radix-ui/react-slot"
-import { type VariantProps } from "class-variance-authority"
-import * as React from "react"
+import { Text, TouchableOpacity, type TouchableOpacityProps } from "react-native";
+import { type VariantProps } from "class-variance-authority";
+import * as React from "react";
 
-import { buttonVariants, cn } from "@/lib/utils"
+import { buttonVariants, cn } from "@/lib/utils";
 
-function ButtonDotlists({
-  className,
-  variant,
-  size,
-  asChild = false,
-  ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
-  }) {
-  const Comp = asChild ? Slot : "button"
+interface ButtonProps
+  extends TouchableOpacityProps,
+    VariantProps<typeof buttonVariants> {}
 
-  return (
-    <Comp
-      data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
-  )
-}
+const ButtonDotlists = React.forwardRef<TouchableOpacity, ButtonProps>(
+  ({ className, variant, size, children, ...props }, ref) => {
+    return (
+      <TouchableOpacity
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      >
+        {React.Children.map(children, child =>
+          typeof child === 'string' ? <Text>{child}</Text> : child
+        )}
+      </TouchableOpacity>
+    );
+  }
+);
+ButtonDotlists.displayName = "Button";
 
-export { ButtonDotlists }
+export { ButtonDotlists };
 
