@@ -24,6 +24,7 @@ import {
   Menu,
   Settings as SettingsIcon,
 } from "lucide-react";
+import { Text, View } from "react-native";
 
 type ConvexItem = Doc<"items"> & { uuid: Id<"items"> };
 type ViewMode = "list" | "gantt";
@@ -69,13 +70,13 @@ export function StatusBar({
 
   if (!selectedList) {
     return (
-      <div className="w-full h-[10vh] p-3">
-        <div className="rounded-b-2xl rounded-t-lg border-3">
-          <div className="flex px-3 py-1 items-center">
-            <p className="text-lg text-muted-foreground">no list selected.</p>
-          </div>
-        </div>
-      </div>
+      <View className="w-full h-[10vh] p-3">
+        <View className="rounded-b-2xl rounded-t-lg border-3">
+          <View className="flex px-3 py-1 items-center">
+            <Text className="text-lg text-muted-foreground">no list selected.</Text>
+          </View>
+        </View>
+      </View>
     );
   }
 
@@ -89,9 +90,9 @@ export function StatusBar({
   const greenPct = (greenCount / total) * 100;
 
   return (
-    <div className={clsx("w-full h-[10vh] p-3 transition-all duration-300")}>
-      <div className="rounded-b-2xl rounded-t-lg border-3">
-        <div className="flex px-3 py-1 items-center">
+    <View className={clsx("w-full h-[10vh] p-3 transition-all duration-300")}>
+      <View className="rounded-b-2xl rounded-t-lg border-3">
+        <View className="flex px-3 py-1 items-center">
           {!isSimpleMode && (
             <>
               <ButtonDotlists
@@ -122,7 +123,7 @@ export function StatusBar({
             onBlur={(e) => handleListNameChange(e.target.value)}
             autoComplete="off"
           />
-          <div className="flex items-center">
+          <View className="flex items-center">
             {!isSimpleMode && (
               <>
                 <ButtonDotlists
@@ -141,7 +142,7 @@ export function StatusBar({
                 </ButtonDotlists>
               </>
             )}
-          </div>
+          </View>
           <Notifications />
           <ButtonDotlists variant="ghost" size="icon" onClick={onSettingsClick}>
             <SettingsIcon className="h-5 w-5" />
@@ -183,35 +184,35 @@ export function StatusBar({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
-        <div className="flex h-12 w-full rounded-b-2xl overflow-hidden">
-          <div
+        </View>
+        <View className="flex h-12 w-full rounded-b-2xl overflow-hidden">
+          <View
             className="transition-all duration-100"
             style={{
               width: `${redPct}%`,
               backgroundColor: redCount > 0 ? "#ef4444" : "transparent",
-              transition: "width 0.3s",
+              //transition: "width 0.3s",
             }}
           />
-          <div
+          <View
             className="transition-all duration-100"
             style={{
               width: `${yellowPct}%`,
               backgroundColor: yellowCount > 0 ? "#fde047" : "transparent",
-              transition: "width 0.3s",
+              //transition: "width 0.3s",
             }}
           />
-          <div
+          <View
             className="transition-all duration-100"
             style={{
               width: `${greenPct}%`,
               backgroundColor: greenCount > 0 ? "#22c55e" : "transparent",
-              transition: "width 0.3s",
+              //transition: "width 0.3s",
             }}
           />
-        </div>
-      </div>
-    </div>
+        </View>
+      </View>
+    </View>
   );
 }
 

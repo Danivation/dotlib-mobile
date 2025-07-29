@@ -2,6 +2,7 @@ import { useTheme } from "@/hooks/useTheme";
 import type { Doc, Id } from "@/lib/convex";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
+import { Text } from "react-native";
 import "../app/global.css";
 import { ListItem } from "./ListItem";
 import { ButtonDotlists } from "./ui/button";
@@ -60,7 +61,7 @@ export function ListEditor({
             theme === "blue" && "bg-blue-500 text-white hover:bg-blue-600"
           )}
         >
-          add new task <span className={clsx("ml-2 text-xs", theme === "blue" ? "text-blue-200" : "text-muted-foreground")}> (ctrl+shift+n)</span>
+          add new task <Text className={clsx("ml-2 text-xs", theme === "blue" ? "text-blue-200" : "text-muted-foreground")}> (ctrl+shift+n)</Text>
         </ButtonDotlists>
       </motion.li>
       <AnimatePresence>

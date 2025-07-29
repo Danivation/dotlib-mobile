@@ -10,12 +10,11 @@ import { useMutation, useQuery } from "convex/react";
 import { AnimatePresence } from "framer-motion";
 import { ChevronsLeft, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Text, View } from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import "./global.css";
 
 import { ButtonDotlists } from "@/components/ui/button";
 import { api, type Doc, type Id } from "@/lib/convex";
-import { Button } from "react-native";
 
 type ConvexItem = Doc<"items"> & { uuid: Id<"items"> };
 
@@ -165,7 +164,7 @@ export default function AuthenticatedApp() {
     rawLists === undefined ||
     teams === undefined
   ) {
-    return <View className="flex items-center justify-center h-screen">Loading...</View>;
+    return <Text className="flex items-center justify-center h-screen">Loading...</Text>;
   }
 
   if (userProfile === null) {
@@ -186,7 +185,7 @@ export default function AuthenticatedApp() {
   const sidebarContent = (
     <>
       <View className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold font-heading">personal lists</h2>
+        <Text className="text-xl font-bold font-heading">personal lists</Text>
         <ButtonDotlists
           variant="ghost"
           size="icon"
@@ -195,22 +194,23 @@ export default function AuthenticatedApp() {
           <ChevronsLeft className="h-5 w-5" />
         </ButtonDotlists>
       </View>
-      <ul>
-        {personalLists.map((list) => (
-          <li
-            key={list.id}
+      <FlatList
+        data={personalLists}
+        keyExtractor={list => list.id}
+        renderItem = {({item: list}) => (
+          <TouchableOpacity
             className={`flex items-center justify-between cursor-pointer p-2 rounded ${
               selectedListId === list.id
                 ? "bg-muted/50 text-muted-foreground"
                 : ""
             }`}
-            onClick={() => {
+            onPress={() => {
               setSelectedListId(list.id);
               setListName(list.name);
               setIsMobileDrawerOpen(false);
             }}
           >
-            <span>{list.name}</span>
+            <Text>{list.name}</Text>
             <ButtonDotlists
               variant="ghost"
               size="icon"
@@ -222,9 +222,9 @@ export default function AuthenticatedApp() {
             >
               <Trash2 className="h-4 w-4 text-red-500" />
             </ButtonDotlists>
-          </li>
-        ))}
-      </ul>
+          </TouchableOpacity>
+        )}
+      />
       <ButtonDotlists variant="ghost" size="sm" onClick={() => handleCreateList()} className="mt-1">
         + new personal list <span className="ml-2 text-xs text-muted-foreground">(ctrl+shift+l)</span>
       </ButtonDotlists>
@@ -252,11 +252,9 @@ export default function AuthenticatedApp() {
 
   return (
     <>
-      <main className="relative md:flex h-screen">
+      <View className="relative md:flex h-screen bg-background text-foreground">
         {/* Mobile Drawer */}
-        <Button
-          title="Mobile drawer"
-        /*
+        <TouchableOpacity
           className={clsx(
             "fixed inset-0 z-20 bg-black bg-opacity-50 transition-opacity md:hidden",
             {
@@ -264,9 +262,8 @@ export default function AuthenticatedApp() {
               "opacity-0 pointer-events-none": !isMobileDrawerOpen,
             },
           )}
-            */
           onPress={() => setIsMobileDrawerOpen(false)}
-        />
+        ><Text>Mobile drawer</Text> </TouchableOpacity>
         <View
           className={clsx(
             "fixed top-0 left-0 h-full bg-background z-30 w-3/4 p-4 border-r overflow-y-auto transition-transform duration-300 md:hidden",
@@ -333,7 +330,7 @@ export default function AuthenticatedApp() {
             )}
           </View>
         </View>
-      </main>
+      </View>
       <AnimatePresence>
         {isSettingsOpen && (
           <Settings

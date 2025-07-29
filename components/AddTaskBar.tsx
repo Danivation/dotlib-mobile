@@ -2,6 +2,7 @@
 import { useTheme } from "@/hooks/useTheme";
 import clsx from "clsx";
 import { Plus } from "lucide-react";
+import { View } from "react-native";
 import "../app/global.css";
 import { ButtonDotlists } from "./ui/button";
 
@@ -13,7 +14,7 @@ export function AddTaskBar({ handleAddItem }: AddTaskBarProps) {
   const { theme } = useTheme();
 
   return (
-    <div className="px-4 py-2">
+    <View className="px-4 py-2">
       <ButtonDotlists
         onClick={handleAddItem}
         variant="outline"
@@ -25,6 +26,6 @@ export function AddTaskBar({ handleAddItem }: AddTaskBarProps) {
         <Plus className="h-4 w-4 mr-2" />
         add new task
       </ButtonDotlists>
-    </div>
+    </View>
   );
 }

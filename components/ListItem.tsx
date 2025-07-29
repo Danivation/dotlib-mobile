@@ -23,6 +23,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+import { Text, TouchableWithoutFeedback, View } from "react-native";
 import "../app/global.css";
 import { CommentSection } from "./CommentSection";
 import { SubtaskItem } from "./SubtaskItem";
@@ -181,7 +182,7 @@ export function ListItem({
       key={node.uuid}
       id={node.uuid}
     >
-      <div className="flex items-center">
+      <View className="flex items-center">
         <ButtonDotlists
           variant="ghost"
           size="icon"
@@ -194,15 +195,15 @@ export function ListItem({
             <ChevronRight className="h-4 w-4" />
           )}
         </ButtonDotlists>
-        <div
-          onClick={() => {
+        <TouchableWithoutFeedback
+          onPress={() => {
             const currentState = node.state as keyof typeof stateOrder;
             const newState = (stateOrder[currentState] + 1) % 3;
             handleUpdateItem(node.uuid, {
               state: stateOrderReversed[newState],
             });
           }}
-          onContextMenu={(e) => {
+          onLongPress={(e) => {
             e.preventDefault();
             const currentState = node.state as keyof typeof stateOrder;
             const newState = (stateOrder[currentState] + 2) % 3;
@@ -217,7 +218,9 @@ export function ListItem({
               : "w-6 h-6 rounded-full",
             colorClass,
           )}
-        ></div>
+        >
+          <View></View>
+        </TouchableWithoutFeedback>
         <Textarea
           ref={textareaRef}
           value={text}
@@ -244,11 +247,11 @@ export function ListItem({
             }
           }}
         />
-        <div className="flex items-center self-center">
+        <View className="flex items-center self-center">
           {node.dueDate && (
-            <span className="text-xs text-gray-500 mr-2 whitespace-nowrap">
+            <Text className="text-xs text-gray-500 mr-2 whitespace-nowrap">
               {format(new Date(node.dueDate), "MMM d")}
-            </span>
+            </Text>
           )}
           <ButtonDotlists
             variant="ghost"
@@ -329,8 +332,8 @@ export function ListItem({
               )}
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
-      </div>
+        </View>
+      </View>
       <AnimatePresence initial={false}>
         {isSubtasksVisible && (
           <motion.div
@@ -344,7 +347,7 @@ export function ListItem({
                 <SubtaskItem key={subtask._id} subtask={subtask} />
               ))}
             </ul>
-            <div className="flex items-center mt-2">
+            <View className="flex items-center mt-2">
               <Input
                 value={newSubtaskText}
                 onChange={(e) => setNewSubtaskText(e.target.value)}
@@ -359,7 +362,7 @@ export function ListItem({
               <ButtonDotlists onClick={handleCreateSubtask} size="sm" className="ml-2">
                 add
               </ButtonDotlists>
-            </div>
+            </View>
           </motion.div>
         )}
       </AnimatePresence>
