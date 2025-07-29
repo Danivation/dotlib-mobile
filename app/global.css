@@ -23,6 +23,7 @@
   --border: 40 13% 30%;
   --input: 40 13% 30%;
   --ring: 88 35% 58%;
+  /**/
 
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -50,6 +51,8 @@
 
   --color-accent: hsl(var(--accent));
   --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --radius: 0.5rem;
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
